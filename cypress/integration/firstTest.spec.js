@@ -1,8 +1,8 @@
-<refrence types="cypress"/>
+/// <reference types="cypress"/>
 
 describe("Our first test suite", () => {
 
-    it("should be a test", () => {
+    it("first test", () => {
 
         cy.visit('/')
         cy.contains('Forms').click()
