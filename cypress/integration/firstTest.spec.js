@@ -39,7 +39,7 @@ describe("Our first test suite", () => {
         cy.get('[data-cy="imputEmail1"]')
     })
 
-    it.only('second test', () => {
+    it('second test', () => {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click()
@@ -56,7 +56,26 @@ describe("Our first test suite", () => {
 
         cy.contains('nb-card', 'Horizontal form').find('[type="Email"]')
 
+    })
 
+    it.only('then and wrap methods', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+
+        cy.contains('nb-card', 'Using the Grid').then( firstForm => {
+            const firstFormEmail = firstForm.find('[for="inputEmail1"]').text()
+            expect(firstFormEmail).to.equal('Email')
+            const firstPasswordLabel = firstForm.find('[for="inputPassword2"]').text()
+            expect(firstPasswordLabel).to.equal('Password')
+
+            cy.contains('nb-card', 'Basic form').then( secondForm => {
+                const secondPasswordLabel = secondForm.find('[for="exampleInputPassword1"]').text()
+                expect(firstPasswordLabel).to.equal(secondPasswordLabel)
+
+                cy.wrap(secondForm).find('[for="exampleInputPassword1"]').should('contain', 'Password')
+            })
+        })
     })
      
 })
