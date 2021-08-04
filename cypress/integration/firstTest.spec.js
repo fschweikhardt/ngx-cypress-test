@@ -2,10 +2,13 @@
 
 describe("Our first test suite", () => {
 
-    it("first test", () => {
-
+    before('goes to site', () => {
         cy.visit('/')
         cy.contains('Forms').click()
+    })
+
+    it("first test", () => {
+
         cy.contains('Form Layouts').click()
 
         //by tag name
@@ -40,8 +43,7 @@ describe("Our first test suite", () => {
     })
 
     it('second test', () => {
-        cy.visit('/')
-        cy.contains('Forms').click()
+
         cy.contains('Form Layouts').click()
 
         cy.get('[data-cy="signInButton"]')
@@ -58,9 +60,8 @@ describe("Our first test suite", () => {
 
     })
 
-    it.only('then and wrap methods', () => {
-        cy.visit('/')
-        cy.contains('Forms').click()
+    it('then and wrap methods', () => {
+
         cy.contains('Form Layouts').click()
 
         cy.contains('nb-card', 'Using the Grid').then( firstForm => {
@@ -77,5 +78,70 @@ describe("Our first test suite", () => {
             })
         })
     })
-     
+
+    it('invoke command', () => {
+
+        cy.contains('Form Layouts').click()
+
+        //method 1
+        cy.get('[for="exampleInputEmail1"]').should('contain', 'Email address')
+
+        //method 2
+        cy.get('[for="exampleInputEmail1"]').then( label => {
+            expect(label.text()).to.equal('Email address')
+        })
+
+        //method 3
+        cy.get('[for="exampleInputEmail1"]').invoke('text').then (label => {
+            expect(label).to.equal('Email address')
+        })
+
+        cy.contains('nb-card', 'Basic form')
+            .find('nb-checkbox')
+            .click()
+            .find('.custom-checkbox')
+            .invoke('attr', 'class')
+            .should('contain', 'checked')
+        
+        
+    })
+
+    it('assert property', () => {
+
+        cy.contains('Datepicker').click()
+
+        cy.contains('nb-card', 'Common Datepicker')
+            .find('input')
+            .then( input => {
+                cy.wrap(input).click()
+                cy.get('nb-calendar-day-picker').contains('20').click()
+                cy.wrap(input).invoke('prop', 'value').should('contain', 'Aug 20, 2021')
+            })
+
+        cy.contains('nb-card', 'Common Datepicker')
+            .find('input')
+            .then( input => {
+                cy.wrap(input).click()
+                cy.get('nb-calendar-day-picker').contains('3').click()
+                cy.wrap(input).invoke('prop', 'value').should('contain', 'Aug 3, 2021')
+        }) 
+
+    })
+
+    it.only('radio buttons', () => {
+
+        cy.contains('Form Layouts').click()
+
+        cy.contains('nb-card', 'Using the Grid').find('[type="radio"]').then(radioButtons => {
+            cy.wrap(radioButtons).first().check({force: true})
+            .should('be.checked')
+
+            cy.wrap(radioButtons).eq(1).check({force: true})
+            .should('be.checked')
+
+            cy.wrap(radioButtons).first()
+            .should('not.be.checked')
+        })
+
+    })
 })
