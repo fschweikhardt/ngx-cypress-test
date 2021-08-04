@@ -128,7 +128,7 @@ describe("Our first test suite", () => {
 
     })
 
-    it.only('radio buttons', () => {
+    it('radio buttons', () => {
 
         cy.contains('Form Layouts').click()
 
@@ -139,9 +139,22 @@ describe("Our first test suite", () => {
             cy.wrap(radioButtons).eq(1).check({force: true})
             .should('be.checked')
 
-            cy.wrap(radioButtons).first()
+            cy.wrap(radioButtons).eq(0)
             .should('not.be.checked')
+
+            cy.wrap(radioButtons).eq(2)
+            .should('be.disabled')
         })
+
+    })
+
+    it.only('checkboxes', () => {
+
+        cy.contains('Modal').click()
+        cy.contains('Toastr').click()
+
+        cy.get('[type="checkbox"]').check({force: true})
+        cy.get('[type="checkbox"]').eq(1).click({force: true})
 
     })
 })
