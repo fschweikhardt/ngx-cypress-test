@@ -158,7 +158,7 @@ describe("Our first test suite", () => {
 
     })
 
-    it.only('lists and dropdowns', () => {
+    it('lists and dropdowns', () => {
         
         //method 1
         cy.get('nav nb-select').click()
@@ -191,4 +191,45 @@ describe("Our first test suite", () => {
             })
         })
     })
+
+    it.only('Web tables', () => {
+        
+        cy.contains('Tables & Data').click()
+        cy.contains('Smart Table').click()
+
+        cy.get('tbody').contains('tr', 'Larry').then( tableRow => {
+            cy.wrap(tableRow).find('.nb-edit').click()
+            cy.wrap(tableRow).find('[placeholder="Age"]').clear().type('25')
+            cy.wrap(tableRow).find('.nb-checkmark').click()
+            cy.wrap(tableRow).find('td').eq(6).should('contain', '25')
+        })
+
+        cy.get('thead').find('.nb-plus').click()
+        cy.get('thead').find('tr').eq(2).then( tableRow => {
+            cy.wrap(tableRow).find('[placeholder="First Name"]').type('Frank')
+            cy.wrap(tableRow).find('[placeholder="Last Name"]').type('Evan')
+            cy.wrap(tableRow).find('.nb-checkmark').click()
+        })
+        cy.get('tbody tr').first().find('td').then( tableColumn => {
+            cy.wrap(tableColumn).eq(2).should('contain', 'rank')
+            cy.wrap(tableColumn).eq(3).should('contain', 'van')
+
+        })
+
+        const ageList = [20, 30, 40, 200]
+
+        cy.wrap(ageList).each( age => {
+            cy.get('thead [placeholder="Age"]').clear().type(age)
+            cy.wait(500)
+            cy.get('tbody tr').each( tableRow => {
+                if (age === 200) {
+                    cy.wrap(tableRow).should('contain', 'No data found')
+                } else {
+                    cy.wrap(tableRow).find('td').eq(6).should('contain', age)
+                }
+            })
+        })
+    })
+
+    
 })
