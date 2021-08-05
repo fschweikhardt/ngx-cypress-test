@@ -79,16 +79,22 @@ describe("Our first test suite", () => {
         })
     })
 
-    it('invoke command', () => {
+    it.only('invoke command', () => {
 
         cy.contains('Form Layouts').click()
 
         //method 1
-        cy.get('[for="exampleInputEmail1"]').should('contain', 'Email address')
+        cy.get('[for="exampleInputEmail1"]')
+            .should('contain', 'Email address')
+            .and('have.class', 'label')
+            .and('have.text', 'Email address')
 
         //method 2
         cy.get('[for="exampleInputEmail1"]').then( label => {
             expect(label.text()).to.equal('Email address')
+            expect(label).to.have.class('label')
+            expect(label).to.have.text('Email address')
+
         })
 
         //method 3
@@ -106,7 +112,7 @@ describe("Our first test suite", () => {
         
     })
 
-    it('assert property', () => {
+    it.only('assert property', () => {
 
         function selectDayFromCurrent(day) {
             let date = new Date()
@@ -137,7 +143,9 @@ describe("Our first test suite", () => {
             .then( input => {
                 cy.wrap(input).click()
                 let dateAssert = selectDayFromCurrent(60)
-                cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
+                // cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
+                cy.wrap(input).should('have.value', dateAssert)
+
             })
 
     })
@@ -258,7 +266,7 @@ describe("Our first test suite", () => {
 
     })
 
-    it.only('dialogue box', () => {
+    it('dialogue box', () => {
 
         cy.contains('Tables').click()
         cy.contains('Smart Table').click()
