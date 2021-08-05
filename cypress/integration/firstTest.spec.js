@@ -245,7 +245,7 @@ describe("Our first test suite", () => {
         })
     })
 
-    it.only('tooltip', () => {
+    it('tooltip', () => {
 
         cy.contains('Modal').click()
         cy.contains('Tooltip').click()
@@ -255,6 +255,22 @@ describe("Our first test suite", () => {
 
         cy.contains('nb-card', 'Colored Tooltips').contains('Primary').click()
         cy.get('nb-tooltip').should('contain', 'This is a tooltip')
+
+    })
+
+    it.only('dialogue box', () => {
+
+        cy.contains('Tables').click()
+        cy.contains('Smart Table').click()
+
+        cy.get('tbody tr').first().find('.nb-trash').click()
+        // cy.contains('tr', 'Jacob').find('.nb-trash').click().should('contain', 'Are you sure')
+
+        const stub = cy.stub()
+        cy.on('window:confirm', stub)
+        cy.get('tbody tr').first().find('.nb-trash').click().then(()=> {
+            expect(stub.getCall(0)).to.be.calledWith('Are you sure you want to delete?')
+        })
 
     })
 
