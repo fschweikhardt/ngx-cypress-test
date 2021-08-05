@@ -106,7 +106,7 @@ describe("Our first test suite", () => {
         
     })
 
-    it.only('assert property', () => {
+    it('assert property', () => {
 
         function selectDayFromCurrent(day) {
             let date = new Date()
@@ -136,7 +136,7 @@ describe("Our first test suite", () => {
             .find('input')
             .then( input => {
                 cy.wrap(input).click()
-                let dateAssert = selectDayFromCurrent(30)
+                let dateAssert = selectDayFromCurrent(60)
                 cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
             })
 
@@ -245,5 +245,17 @@ describe("Our first test suite", () => {
         })
     })
 
+    it.only('tooltip', () => {
+
+        cy.contains('Modal').click()
+        cy.contains('Tooltip').click()
+
+        cy.contains('nb-card', 'Colored Tooltips').find('Button').first().click()
+        cy.get('nb-tooltip').should('contain', 'This is a tooltip')
+
+        cy.contains('nb-card', 'Colored Tooltips').contains('Primary').click()
+        cy.get('nb-tooltip').should('contain', 'This is a tooltip')
+
+    })
 
 })
