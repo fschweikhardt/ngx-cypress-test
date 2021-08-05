@@ -8,7 +8,6 @@ describe("Our first test suite", () => {
     })
 
     it("first test", () => {
-
         cy.contains('Form Layouts').click()
 
         //by tag name
@@ -79,7 +78,7 @@ describe("Our first test suite", () => {
         })
     })
 
-    it.only('invoke command', () => {
+    it('invoke command', () => {
 
         cy.contains('Form Layouts').click()
 
@@ -112,7 +111,7 @@ describe("Our first test suite", () => {
         
     })
 
-    it.only('assert property', () => {
+    it('assert property', () => {
 
         function selectDayFromCurrent(day) {
             let date = new Date()
@@ -256,7 +255,7 @@ describe("Our first test suite", () => {
     it('tooltip', () => {
 
         cy.contains('Modal').click()
-        cy.contains('Tooltip').click()
+        cy.contains('Tooltip').click({force: true})
 
         cy.contains('nb-card', 'Colored Tooltips').find('Button').first().click()
         cy.get('nb-tooltip').should('contain', 'This is a tooltip')
@@ -269,7 +268,7 @@ describe("Our first test suite", () => {
     it('dialogue box', () => {
 
         cy.contains('Tables').click()
-        cy.contains('Smart Table').click()
+        cy.contains('Smart Table').click({force: true})
 
         cy.get('tbody tr').first().find('.nb-trash').click()
         // cy.contains('tr', 'Jacob').find('.nb-trash').click().should('contain', 'Are you sure')
