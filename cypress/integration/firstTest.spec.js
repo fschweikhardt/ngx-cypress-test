@@ -106,7 +106,29 @@ describe("Our first test suite", () => {
         
     })
 
-    it('assert property', () => {
+    it.only('assert property', () => {
+
+        function selectDayFromCurrent(day) {
+            let date = new Date()
+            date.setDate(date.getDate() + day)
+            let futureDay = date.getDate()
+            let futureMonth = date.toLocaleString('default', {month: 'short'})
+            let futureYear = date.getFullYear()
+            let dateAssert = futureMonth + ' ' + futureDay + ', ' + futureYear
+            cy.log(dateAssert)
+
+            cy.get('nb-calendar-navigation').invoke('attr', 'ng-reflect-date').then( dateAttribute => {
+                if (!dateAttribute.includes(futureMonth) 
+                    // && !dateAttribute.includes(futureYear)
+                ) {
+                    cy.get('[data-name="chevron-right"]').click()
+                    selectDayFromCurrent(day)
+                } else {
+                    cy.get('nb-calendar-day-picker [class="day-cell ng-star-inserted"]').contains(futureDay).click()
+                }
+            })
+            return dateAssert
+        }
 
         cy.contains('Datepicker').click()
 
@@ -114,17 +136,9 @@ describe("Our first test suite", () => {
             .find('input')
             .then( input => {
                 cy.wrap(input).click()
-                cy.get('nb-calendar-day-picker').contains('20').click()
-                cy.wrap(input).invoke('prop', 'value').should('contain', 'Aug 20, 2021')
+                let dateAssert = selectDayFromCurrent(30)
+                cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
             })
-
-        cy.contains('nb-card', 'Common Datepicker')
-            .find('input')
-            .then( input => {
-                cy.wrap(input).click()
-                cy.get('nb-calendar-day-picker').contains('3').click()
-                cy.wrap(input).invoke('prop', 'value').should('contain', 'Aug 3, 2021')
-        }) 
 
     })
 
@@ -192,7 +206,7 @@ describe("Our first test suite", () => {
         })
     })
 
-    it.only('Web tables', () => {
+    it('Web tables', () => {
         
         cy.contains('Tables & Data').click()
         cy.contains('Smart Table').click()
@@ -231,5 +245,5 @@ describe("Our first test suite", () => {
         })
     })
 
-    
+
 })
