@@ -1,8 +1,8 @@
 /// <reference types="cypress"/>
 
-import { navigateTo } from "../support/page_objects/navigationPage"
+import { navigateTo } from "../support/page_objects/NavigationPage"
 
-describe.only('test with page objects', () => {
+describe('test with page objects', () => {
 
     beforeEach('go to page', () => {
         cy.visit('/')
@@ -11,6 +11,9 @@ describe.only('test with page objects', () => {
     it('verify navigation across the page', () => {
         navigateTo.formLayoutsPage()
         navigateTo.datePickerPage()
+        navigateTo.toastrPage()
+        navigateTo.smartTablePage()
+        navigateTo.toolTipPage()
     })
 
 
