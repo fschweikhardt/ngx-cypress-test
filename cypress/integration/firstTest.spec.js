@@ -106,10 +106,9 @@ describe("Our first test suite", () => {
         cy.contains('nb-card', 'Basic form')
             .find('nb-checkbox')
             .click()
-            .find('.custom-checkbox')
+            .find('.custom-checkbox').should('have.class', 'checked')
             .invoke('attr', 'class')
             .should('contain', 'checked')
-        
         
     })
 
